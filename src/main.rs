@@ -11,7 +11,12 @@ fn main() {
     println!("d = {}", d);
 
     println!("{}\n\n{}\n\n{}", a, b, c);
-    println!("Len:\n\n{}\n\n{}\n\n{}", a.len(), b.len(), c.len());
+    println!(
+        "Len a:{}\n\nLen b: {}\n\n Len c: {}",
+        a.len(),
+        b.len(),
+        c.len()
+    );
 
     let dot_product = VecF::dot(&a, &b);
     println!("Dot product: {}", dot_product);
