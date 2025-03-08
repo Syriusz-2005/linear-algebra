@@ -1,58 +1,24 @@
-use std::{
-    default,
-    ops::{AddAssign, Deref, Mul, MulAssign},
-};
+mod vector;
 
-pub struct Vector<T>(Box<Vec<T>>);
-
-impl<T> Vector<T>
-where
-    T: AddAssign<T> + Mul<T, Output = T> + Copy + Default + Deref,
-{
-    pub fn with2<P: AddAssign<T> + Mul<T, Output = T> + Copy + Default + Deref>(
-        x: P,
-        y: P,
-    ) -> Vector<P> {
-        return Vector::<P>(Box::new(vec![x, y]));
-    }
-
-    pub fn with3<P: AddAssign<T> + Mul<T, Output = T> + Copy + Default + Deref>(
-        x: P,
-        y: P,
-        z: P,
-    ) -> Vector<P> {
-        return Vector::<P>(Box::new(vec![x, y, z]));
-    }
-
-    pub fn add(&mut self, scalar: T) {
-        for idx in 0..self.len() {
-            if let Some(component) = self.0.get_mut(idx) {
-                *component += scalar;
-            }
-        }
-    }
-
-    pub fn dot(&self, b: Vector<T>) -> T {
-        let mut product: T = T::default();
-        if self.len() != b.len() {
-            panic!("The vector lengths are incompatible!");
-        }
-        for idx in 0..self.len() {
-            let c1 = self.0.get(idx);
-            let c2 = b.0.get(idx);
-            let c1_val = *c1.unwrap_or(&T::default());
-            let c2_val = *c2.unwrap_or(&T::default());
-            product += c1_val * c2_val;
-        }
-        return product;
-    }
-
-    pub fn len(&self) -> usize {
-        return self.0.len();
-    }
-}
+use vector::VecF;
 
 fn main() {
-    println!("Hello, world!");
-    let a = &Vector::with2(5.0, 5.0);
+    let a = VecF::as2(3.0, 1.4);
+    let b = VecF::as2(0.0, 2.0);
+    let c = VecF::as2(1., 1.);
+
+    let d = &a + &b;
+    println!("d = {}", d);
+
+    println!("{}\n\n{}\n\n{}", a, b, c);
+    println!("Len:\n\n{}\n\n{}\n\n{}", a.len(), b.len(), c.len());
+
+    let dot_product = VecF::dot(&a, &b);
+    println!("Dot product: {}", dot_product);
+
+    let na = a.normalize();
+    let nb = b.normalize();
+
+    let dot_product = VecF::dot(&na, &nb);
+    println!("Dot product after normalization: {}", dot_product);
 }
