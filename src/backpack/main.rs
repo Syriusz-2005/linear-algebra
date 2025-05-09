@@ -54,7 +54,7 @@ fn solve_backpack_v2(items: &Vec<Item>, capacity: u64) -> Vec<&Item> {
         let mut value_sum: u64 = 0;
         for bit_index in 0..items.len() {
             let bit_value = i & masks[bit_index];
-            if bit_value > 0 {
+            if bit_value != 0 {
                 size_sum += items[bit_index].size;
                 value_sum += items[bit_index].value;
             }
@@ -64,7 +64,7 @@ fn solve_backpack_v2(items: &Vec<Item>, capacity: u64) -> Vec<&Item> {
             winning_configuration = i;
         }
     }
-    let mut output: Vec<&Item> = Vec::new();
+    let mut output: Vec<&Item> = Vec::with_capacity(items.len());
     for bit_index in 0..items.len() {
         let mask = (2 as u64).pow(bit_index as u32);
         let bit_value = winning_configuration & mask;
@@ -82,9 +82,6 @@ fn solve_backpack_v3(items: &Vec<Item>, capacity: u64) -> Vec<&Item> {
     for i in 0..iterations {
         let mut size_sum: u64 = 0;
         let mut value_sum: u64 = 0;
-        // (0..items.len())
-        //     .map(|bit_index| (bit_index, (i >> bit_index) & 1u64))
-        //     .filter(|(_, bit_value)| bit_value != 0)
         for bit_index in 0..items.len() {
             let bit_value = (i >> bit_index) & 1u64;
             if bit_value > 0 {
@@ -97,7 +94,7 @@ fn solve_backpack_v3(items: &Vec<Item>, capacity: u64) -> Vec<&Item> {
             winning_configuration = i;
         }
     }
-    let mut output: Vec<&Item> = Vec::new();
+    let mut output: Vec<&Item> = Vec::with_capacity(items.len());
     for bit_index in 0..items.len() {
         let bit_value = (winning_configuration >> bit_index) & 1u64;
         if bit_value > 0 {
@@ -125,7 +122,7 @@ fn main() {
         Item { size: 1, value: 2 },
     ];
 
-    let iterations = 1_000;
+    let iterations = 2_000;
     let capacity = 11;
 
     let mut solutions: Vec<Vec<&Item>> = Vec::with_capacity(iterations);
