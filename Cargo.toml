@@ -2,5 +2,8 @@
 name = "linear-algebra"
 version = "0.1.0"
 edition = "2021"
+[[bin]]
+name = "backpack"
+path = "src/backpack/main.rs"
 
 [dependencies]
