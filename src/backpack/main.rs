@@ -152,6 +152,7 @@ fn solve_backpack_multithreaded(items: &Vec<Item>, capacity: u64) -> Vec<&Item> 
     let winning_configuration = thread_handles
         .into_iter()
         .map(|thread_handle| thread_handle.join().unwrap())
+        .inspect(|thread| println!("Thread completed, best: {}", thread.value_sum))
         .min_by(|ra, rb| rb.value_sum.cmp(&ra.value_sum))
         .take()
         .unwrap()
