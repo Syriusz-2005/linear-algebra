@@ -93,7 +93,6 @@ fn solve_backpack_multithreaded(items: &Vec<Item>, capacity: u64) -> Vec<&Item> 
         .map(|thread_handle| thread_handle.join().unwrap())
         .inspect(|thread| println!("Thread completed, best: {}", thread.value_sum))
         .min_by(|ra, rb| rb.value_sum.cmp(&ra.value_sum))
-        .take()
         .unwrap()
         .winning_configuration;
 
@@ -195,8 +194,7 @@ fn main() {
     solve_backpack_v2(&vec![Item { size: 2, value: 3 }], capacity);
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    let result = solve_backpack_multithreaded(&items, capacity);
-    // let result = solve_backpack_v3(&items, capacity);
+    let result = solve_backpack_v2(&items, capacity);
     let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
     println!("Time: {} ms", (end - start).as_millis());
 
